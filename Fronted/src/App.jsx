@@ -1,5 +1,4 @@
 import "./App.css";
-import Navbar from "../src/components/navbar/Navbar";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "boxicons/css/boxicons.min.css";

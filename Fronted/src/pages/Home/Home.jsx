@@ -3,29 +3,45 @@ import Navbar from "../../../src/components/navbar/Navbar";
 import { useState } from "react";
 import style from "./Home.module.css";
 
+import { useDispatch } from "react-redux";
+// import { addToCart } from '../store/actions/cartActions';
+import { addToCartt } from "../../redux/actions/cartActions";
+
+import MyMap from "../../components/Map/Map";
+
 const Home = () => {
   const [headerData, setHeaderData] = useState([]);
-  const [addCart, setAddCart] = useState(0);
 
   // Function to receive data from Header component
   const handleHeaderDataChange = (data) => {
-    console.log("here also data changingv aginax  ");
+    console.log("here also data changingv aginax");
     setHeaderData(data);
   };
-  function addToCart() {
-    console.log("hello");
-    setAddCart((prev) => {
-      prev + 1;
-    });
-  }
+  const dispatch = useDispatch();
+
+  // Function to handle adding item to cart
+  const addToCart = (item) => {
+    dispatch(addToCartt(item));
+    // Perform any other actions (e.g., remove item from list) here
+  };
   console.log("bro", headerData);
   return (
     <div>
       <Navbar onDataChangeReal={handleHeaderDataChange} />
       {/* <Navbar /> */}
 
+      {/* <div style={{ width: "200px", height: "200px" }}>
+        <MyMap apiKey="e3b446d24b104135930030413e92cec2" />
+      </div> */}
+
       {/* Render cards based on headerData */}
       <div className={style.search_results}>
+        <img
+          width="200"
+          height="200"
+          src="https://maps.geoapify.com/v1/staticmap?style=osm-carto&width=600&height=400&center=lonlat:-122.304378,47.526022&zoom=14&apiKey=e3b446d24b104135930030413e92cec2"
+          alt="8531 East Marginal Way South, Tukwila, WA 98108, United States of America"
+        ></img>
         {headerData.map((item) => (
           <div
             key={item.id}

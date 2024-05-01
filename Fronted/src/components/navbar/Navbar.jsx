@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import logo from "../../../public/logo.png";
 import axios from "axios";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 // Navbar component
 function Navbar() {
@@ -33,6 +34,17 @@ function Navbar() {
 
 // HeaderMain component
 function HeaderMain({ onDataChange }) {
+  const [totalItems, setTotalItems] = useState();
+  const cartItems = useSelector((state) => state.cart.items);
+
+  // Calculate total quantity of items in the cart
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+  useEffect(() => {
+    setTotalItems(totalQuantity);
+  }, [totalQuantity]);
   async function handelValueChange(e) {
     console.log("valus is changing");
     const resposne = await axios.get("http://localhost:3000/search", {
@@ -89,7 +101,7 @@ function HeaderMain({ onDataChange }) {
                 <i className="bx bxs-shopping-bag"></i>
               </span>
               <div className="d-flex flex-column ms-2">
-                <span className="qty">0 Product</span>
+                <span className="qty">{totalItems} Product</span>
                 <span className="fw-bold">$0</span>
               </div>
             </div>

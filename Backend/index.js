@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 const axios = require("axios");
 const puppeteer = require("puppeteer");
-const { promisify } = require("util");
-const { execFile } = require("child_process");
 
 const cors = require("cors");
 
@@ -17,23 +15,28 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/search", (req, res, next) => {
+app.get("/search", async (req, res, next) => {
   var searchQuery = req.query.search;
   console.log("searching for: " + searchQuery);
   console.log(searchQuery);
 
-  const googleCustomSearchUrl = `https://customsearch.googleapis.com/customsearch/v1?cx=578607853b885431e&key=AIzaSyDkcwTxdcezaN1nWd2AD3BnXvhv5dwDtYc&q=' ${searchQuery}`;
+  const googleCustomSearchUrl = `https://customsearch.googleapis.com/customsearch/v1?cx=578607853b885431e&key=AIzaSyDvyFUriNmkT6ukZum2U0cj-SrRy0ZowMY&q=${searchQuery}`;
 
   axios
     .get(googleCustomSearchUrl)
     .then((response) => {
-      console.log("here is the response", response.data);
+      // console.log("here is the response", response.data);
       res.send(response.data);
     })
     .catch((error) => {
-      console.error("Error retrieving search results:", error);
+      // console.error("Error retrieving search results:", error);
       res.status(500).send("Error retrieving search results");
     });
+  // const response = await axios.get(googleCustomSearchUrl);
+
+  // res.status(200).send(response);
+
+  // console.log(response);
 });
 
 async function scrapePage() {
@@ -76,7 +79,7 @@ async function scrapePage() {
   await browser.close();
 }
 
-scrapePage();
+// scrapePage();
 
 // async function searchConstructionCompanies(location) {
 //   try {
@@ -116,6 +119,20 @@ scrapePage();
 //   })
 //   .catch((error) => {
 //     console.error("Error:", error);
+//   });
+
+// var config = {
+//   method: "get",
+//   url: "https://api.geoapify.com/v1/geocode/search?text=shyam&apiKey=e3b446d24b104135930030413e92cec2",
+//   headers: {},
+// };
+
+// axios(config)
+//   .then(function (response) {
+//     console.log("here is our datr", response.data.features);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
 //   });
 
 app.listen(3000, () => {
